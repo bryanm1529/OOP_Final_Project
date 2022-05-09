@@ -5,14 +5,33 @@
 #ifndef OOP_FINAL_PROJECT_DYNAMIC_H
 #define OOP_FINAL_PROJECT_DYNAMIC_H
 #include <list>
+#include <iostream>
 using namespace std;
+
+
 class Dynamic {
-    list<function<void()>> functions;
 
-    Dynamic();
+public:
+    list<function<void()>>functions;
 
-    void remove_func(f);
-    void add_func(f);
+
+    function<void(function<void()>)> remove_func_object = remove_func();
+    function<void(function<void()>)> add_func_object = add_func();
+
+
+
+
+    struct remove_func {
+        void operator()(function<void()> f) const {
+            //Code to remove function from class
+        }
+    };
+
+    struct add_func {
+        void operator()(function<void()> f) const {
+            //Code to add function from class
+        }
+    };
 };
 
 
