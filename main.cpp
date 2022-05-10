@@ -1,8 +1,6 @@
 #include <iostream>
 #include <list>
-
 using namespace std;
-
 
 class Dynamic {
 
@@ -19,10 +17,6 @@ public:
 
     Dynamic(){};
 
-    //Here we store a call to a function object to the remove and add functions this allows us to access the function at runtime
-    function<void(void*)> remove_func_object = remove_func();
-    function<void(void*)> add_func_object = add_func();
-
     //These are our functions which we need to overload operator() for them to work
     struct remove_func {
         void operator()(void *f) const {
@@ -37,15 +31,34 @@ public:
             functions.push_back(f);
         }
     };
+
+    //Here we store a call to a function object to the remove and add functions this allows us to access the function at runtime
+    function<void(void*)> remove_func_object = remove_func();
+    function<void(void*)> add_func_object = add_func();
+
+    void print(std::list<void*> const &list)
+    {
+        for (auto it = list.cbegin(); it != list.cend(); it++) {
+            std::cout << *it << std::endl;
+        }
+    }
 };
 
 //test function to add or delete
 void* dog(){
+    int i = 7;
+    int *doggy = &i;
+
     cout << " hi" << endl;
+    return reinterpret_cast<void *>(*doggy);
 }
 
 int main() {
     Dynamic test;
+
+    test.add_func_object(dog());
+
+    test.print(test.functions);
 
 
     return 0;
